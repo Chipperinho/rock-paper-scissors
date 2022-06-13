@@ -1,68 +1,79 @@
-const choice = ["rock","paper","scissors"]
-let count = 0;
+let choice = ["rock","paper","scissors"];
 let playerScore = 0;
 let computerScore = 0;
 let computerSelection = " ";
 let playerSelection = " ";
 let playerSelLower = " ";
 
-function game(){
-    let rounds = prompt("How many rounds would you like to play?");
-    rounds = +rounds
-    for (let i = 0; i < rounds; i++){
+function resetScore(){
+    document.getElementById('scorePlyr').textContent = `Player: 0`
+    document.getElementById('scoreComp').textContent = `Computer: 0`
+    const playBtn = document.createElement('button')
+    playBtn.className = 'button'
+    playBtn.style.flex = 'none'
+    playBtn.textContent = "Play Again?"
+    playBtn.addEventListener("click", function(){
+        location.reload()
+    })
+    const mainClass = document.getElementById('main')
+    mainClass.insertBefore(playBtn,mainClass.children[2])
+    document.getElementById('rock').disabled = true;
+    document.getElementById('paper').disabled = true;
+    document.getElementById('scissors').disabled = true;
+}
 
+function playRound(playerSelection){
+    if (computerScore < 5 && playerScore < 5){
+        console.log(playerSelection)
         function computerPlay(){
             return choice[Math.floor(Math.random()*choice.length)]
         }
+    
+        computerSelection = computerPlay();
+        console.log(computerSelection)
 
-        function playRound(playerSelection,computerSelection){
-            
-            let selectionCheck = false;
-
-            while(selectionCheck == false){
-
-                playerSelection = prompt("Enter rock, paper, or scissors");
-                playerSelection = playerSelection.toLowerCase();
-
-                if (playerSelection === "rock"){
-                    selectionCheck = true;
-                }else if (playerSelection === "paper"){
-                    selectionCheck = true;
-                }else if (playerSelection === "scissors"){
-                    selectionCheck = true;
-                }
-            }
-
-            computerSelection = computerPlay();
-
-            if (playerSelection == choice[0] && computerSelection == choice[1]){
-                computerScore = computerScore + 1
-                console.log(`You lose, ${computerSelection} beats ${playerSelection}.`);
-            }else if (playerSelection == choice[1] && computerSelection == choice [2]){
-                computerScore = computerScore + 1
-                console.log(`You lose, ${computerSelection} beats ${playerSelection}.`);
-            }else if (playerSelection == choice[2] && computerSelection == choice [0]){
-                computerScore = computerScore + 1
-                console.log(`You lose, ${computerSelection} beats ${playerSelection}.`)
-            }else if (playerSelection == computerSelection){
-                i = i - 1;
-                count = count - 1;
-                console.log(`Tie!, both of you picked ${playerSelection}.`)
-            }
-            else {
-                playerScore = playerScore + 1
-                console.log(`You win, ${playerSelection} beats ${computerSelection}.`)
-            }
+        if (playerSelection == "rock" && computerSelection == "paper"){
+            computerScore = computerScore + 1
+            document.getElementById('scoreComp').textContent = `Computer: ${computerScore}`
+        }else if (playerSelection == "paper" && computerSelection == "scissors"){
+            computerScore = computerScore + 1
+            document.getElementById('scoreComp').textContent = `Computer: ${computerScore}`
+        }else if (playerSelection == "scissors" && computerSelection == "rock"){
+            computerScore = computerScore + 1
+            document.getElementById('scoreComp').textContent = `Computer: ${computerScore}`
+        }else if (playerSelection == computerSelection){
+            return
         }
-        playRound();
-        count = count + 1;
-        console.log(`Round ${count} is over, current score is Player: ${playerScore} and Computer: ${computerScore}.`)
-    }
-    if (playerScore > computerScore){
-        console.log("Congratulations!, you should go buy a lottery ticket.")
-    }else{
-        console.log("Congratulations!, an AI is luckier than you")
+        else {
+            playerScore = playerScore + 1
+            document.getElementById('scorePlyr').textContent = `Player: ${playerScore}`
+        }
+    }else if (playerScore == 5){
+        const playerWin = document.getElementById('scoreTitle')
+        playerWin.textContent = `You win!`
+        playerWin.style.color = 'green'
+        playerWin.style.fontWeight = 'bold'
+        resetScore()
+    }else if (computerScore == 5){
+        const compWin = document.getElementById('scoreTitle')
+        compWin.textContent = `You lose!`
+        compWin.style.color = 'red'
+        compWin.style.fontWeight = 'bold'
+        resetScore()
     }
 }
 
-game();
+
+document.getElementById("rock").onclick = function(){
+    playRound("rock");
+}
+document.getElementById("paper").onclick = function(){
+    playRound("paper");
+}
+document.getElementById("scissors").onclick = function(){
+    playRound("scissors");
+}
+
+
+
+
