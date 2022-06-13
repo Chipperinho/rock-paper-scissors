@@ -4,6 +4,7 @@ let computerScore = 0;
 let computerSelection = " ";
 let playerSelection = " ";
 let playerSelLower = " ";
+let choices = " ";
 
 function resetScore(){
     document.getElementById('scorePlyr').textContent = `Player: 0`
@@ -22,31 +23,40 @@ function resetScore(){
     document.getElementById('scissors').disabled = true;
 }
 
+function showChoice(){
+    choices = document.getElementById('title')
+    choices.textContent = `Computer chose: ${computerSelection}`
+    choices.style.color = 'grey'
+    choices.style.fontWeight = 'bold'
+    choices.style.fontSize = '16px'
+    choices.style.flex = 'none'
+}
+
 function playRound(playerSelection){
     if (computerScore < 5 && playerScore < 5){
-        console.log(playerSelection)
         function computerPlay(){
             return choice[Math.floor(Math.random()*choice.length)]
         }
-    
         computerSelection = computerPlay();
-        console.log(computerSelection)
-
         if (playerSelection == "rock" && computerSelection == "paper"){
             computerScore = computerScore + 1
             document.getElementById('scoreComp').textContent = `Computer: ${computerScore}`
+            showChoice()
         }else if (playerSelection == "paper" && computerSelection == "scissors"){
             computerScore = computerScore + 1
             document.getElementById('scoreComp').textContent = `Computer: ${computerScore}`
+            showChoice()
         }else if (playerSelection == "scissors" && computerSelection == "rock"){
             computerScore = computerScore + 1
             document.getElementById('scoreComp').textContent = `Computer: ${computerScore}`
+            showChoice()
         }else if (playerSelection == computerSelection){
-            return
+            showChoice()
         }
         else {
             playerScore = playerScore + 1
             document.getElementById('scorePlyr').textContent = `Player: ${playerScore}`
+            showChoice()
         }
     }else if (playerScore == 5){
         const playerWin = document.getElementById('scoreTitle')
